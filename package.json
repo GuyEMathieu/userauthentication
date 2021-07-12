@@ -1,0 +1,35 @@
+{
+  "name": "userauthentication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuyEMathieu/userauthentication.git"
+  },
+  "author": "Guy Mathieu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuyEMathieu/userauthentication/issues"
+  },
+  "homepage": "https://github.com/GuyEMathieu/userauthentication#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.0",
+    "mongoose": "^5.13.2"
+    
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "nodemon": "^2.0.12"
+  }
+}
