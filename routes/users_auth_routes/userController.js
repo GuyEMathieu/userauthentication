@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator')
 const { v4: uid } = require('uuid');
+//const User = require('./User')
 
 // @route       Post api/users
 // @desc        Register a user

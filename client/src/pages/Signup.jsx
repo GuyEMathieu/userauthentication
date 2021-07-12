@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
+import { KeyboardDatePicker } from '@material-ui/pickers';
 
 function Copyright() {
     return (
@@ -49,6 +51,32 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
     const classes = useStyles();
 
+    const [user, setUser] = useState({})
+    const {firstName, lastName, dateOfBirth} = user
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setUser(prev => {
+            return {
+                ...prev,
+                [name]: value
+            }
+        })
+    }
+
+    const handleDateOfBirth = date => {
+        setUser(prev => {
+            return {
+                ...prev,
+                dateOfBirth: date
+            }
+        })
+    }
+
+    const handleSave = e => {
+        e.preventDefault()
+        console.info(user)
+    }
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -63,6 +91,8 @@ export default function SignUp() {
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                value={firstName}
+                                onChange={handleChange}
                                 autoComplete="fname"
                                 name="firstName"
                                 variant="outlined"
@@ -75,6 +105,8 @@ export default function SignUp() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                value={lastName}
+                                onChange={handleChange}
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -85,20 +117,18 @@ export default function SignUp() {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                            <KeyboardDatePicker
+                                autoOk disableFuture variant='outlined'
+                                label="Date of Birth"  name='dateOfBirth'
+                                format='MM/dd/yyyy' value={dateOfBirth}
+                                onChange={handleDateOfBirth}
                             />
                         </Grid>
 
 
                     </Grid>
                     <Button
+                        onClick={handleSave}
                         type="submit"
                         fullWidth
                         variant="contained"
