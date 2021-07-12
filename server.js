@@ -14,6 +14,11 @@ app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => ({ msg: 'Welcome to  API' }));
 
+// User Routes
+app.use('/api/users', require('./routes/users_auth_routes/userController'))
+
+// Auth Routes
+app.use('/api/auth', require('./routes/users_auth_routes/authController'))
 
 
 const PORT = process.env.PORT || 5000;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -49,6 +49,23 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
     const classes = useStyles();
 
+    const [user, setUser] = useState({})
+    const { username, password } = user;
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setUser(prev => {
+            return {
+                ...prev,
+                [name]: value
+            }
+        })
+    }
+
+    const handleLogin = e => {
+        console.info("loging in user")
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -63,20 +80,18 @@ export default function SignIn() {
                     <TextField
                         variant="outlined"
                         margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        required onChange={handleChange}
+                        fullWidth value={username}
+                        label="username"
+                        name="username"
                         autoFocus
                     />
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
-                        fullWidth
-                        name="password"
+                        fullWidth onChange={handleChange}
+                        name="password" value={password}
                         label="Password"
                         type="password"
                         id="password"
@@ -88,7 +103,7 @@ export default function SignIn() {
                     />
                     <Button
                         type="submit"
-                        fullWidth
+                        fullWidth onClick={handleLogin}
                         variant="contained"
                         color="primary"
                         className={classes.submit}
