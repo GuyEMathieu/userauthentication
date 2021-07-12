@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -52,7 +52,7 @@ export default function SignUp() {
     const classes = useStyles();
 
     const [user, setUser] = useState({})
-    const {firstName, lastName, dateOfBirth} = user
+    const { username, password, confirmPassword } = user
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -64,14 +64,6 @@ export default function SignUp() {
         })
     }
 
-    const handleDateOfBirth = date => {
-        setUser(prev => {
-            return {
-                ...prev,
-                dateOfBirth: date
-            }
-        })
-    }
 
     const handleSave = e => {
         e.preventDefault()
@@ -89,39 +81,30 @@ export default function SignUp() {
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} >
                             <TextField
-                                value={firstName}
+                                value={username}
                                 onChange={handleChange}
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
+                                name="username"
+                                required label="Username"
                                 autoFocus
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} >
                             <TextField
-                                value={lastName}
+                                value={password}
                                 onChange={handleChange}
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
+                                name="password"
+                                required label="Password"
+                                autoFocus
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <KeyboardDatePicker
-                                autoOk disableFuture variant='outlined'
-                                label="Date of Birth"  name='dateOfBirth'
-                                format='MM/dd/yyyy' value={dateOfBirth}
-                                onChange={handleDateOfBirth}
+                            <TextField
+                                value={confirmPassword}
+                                onChange={handleChange}
+                                name="confirmPassword"
+                                required label="Confirm Password"
                             />
                         </Grid>
 

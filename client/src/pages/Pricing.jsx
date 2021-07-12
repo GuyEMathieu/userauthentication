@@ -10,10 +10,11 @@ import Grid from '@material-ui/core/Grid';
 import StarIcon from '@material-ui/icons/StarBorder';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+
+import { Link } from 'react-router-dom'
 
 function Copyright() {
     return (
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         margin: theme.spacing(1, 1.5),
+        textDecoration: 'none'
     },
     heroContent: {
         padding: theme.spacing(8, 0, 6),
@@ -129,6 +131,10 @@ const footers = [
 export default function Pricing() {
     const classes = useStyles();
 
+    const handleLogout = e => {
+        e.preventDefault();
+    }
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -138,18 +144,28 @@ export default function Pricing() {
                         Company name
                     </Typography>
                     <nav>
-                        <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                        <Link
+                            variant="button" color="textPrimary"
+                            to={'/#'} className={classes.link}>
                             Features
                         </Link>
-                        <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                        <Link
+                            variant="button" color="textPrimary"
+                            to={'/#'} className={classes.link}>
                             Enterprise
                         </Link>
-                        <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                        <Link
+                            variant="button" color="textPrimary"
+                            to={'/#'} className={classes.link}>
                             Support
                         </Link>
                     </nav>
-                    <Button href="#" color="primary" variant="outlined" className={classes.link}>
-                        Login
+                    <Button
+                        fullWidth={false} href="#"
+                        color="primary"
+                        variant="outlined"
+                        className={classes.link}>
+                        Logout
                     </Button>
                 </Toolbar>
             </AppBar>

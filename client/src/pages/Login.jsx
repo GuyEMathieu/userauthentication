@@ -64,7 +64,7 @@ export default function SignIn() {
 
     const handleLogin = e => {
         e.preventDefault();
-        console.info("loging in user")
+        console.info(user)
     }
 
     return (
