@@ -66,10 +66,11 @@ router.get('/', auth, async (req, res) => {
 router.post('/', 
     [
         check('username', 'A valid username is required').not().isEmpty(),
-        check('password', 'A valid username is required with 6 or more characters')
+        check('password', 'A valid password is required with 6 or more characters')
             .isLength({min: 6})
     ],
     async (req, res) => {
+
         if(!validationResult(req).isEmpty()){
             const _raw = validationResult(req).array();
             let alerts = []

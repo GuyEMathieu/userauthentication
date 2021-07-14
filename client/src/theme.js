@@ -1,9 +1,9 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 
 
 
 // // Create theme instance
-export const theme = createMuiTheme({
+export const theme = createTheme({
     palette: {
         primary: {
             main: "#f00"

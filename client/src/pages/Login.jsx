@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import React, { useState, useContext } from 'react';
+import {
+    Button, CssBaseline, makeStyles, Checkbox,
+    TextField, Typography, FormControlLabel,
+    Link, Grid, Box, Container, Avatar
+} from '@material-ui/core';
+
+import Alert from '@material-ui/lab/Alert';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+
+import { AuthContext } from '../context/authContext/AuthState'
 
 function Copyright() {
     return (
@@ -48,23 +46,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
+    const authContext = useContext(AuthContext);
+    const { loginUser, alerts, removeAlert } = authContext;
 
     const [user, setUser] = useState({})
     const { username, password } = user;
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setUser(prev => {
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
-    }
+    const handleChange = e => setUser({
+        ...user,
+        [e.target.name]: e.target.value
+    })
 
-    const handleLogin = e => {
+
+    const handleLogin = async e => {
         e.preventDefault();
-        console.info(user)
+        await loginUser(user)
     }
 
     return (
@@ -77,7 +73,18 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
+
+                {alerts &&
+                    <Grid container spacing={2}>
+                        {alerts.map(alert => (
+                            <Grid item xs={12}>
+                                <Alert onClose={() => removeAlert(alert._id)} key={alert._id} severity={alert.severity}>{alert.msg}</Alert>
+                            </Grid>
+                        ))}
+                    </Grid>
+                }
                 <form className={classes.form} noValidate>
+
                     <TextField
                         variant="outlined"
                         margin="normal"
