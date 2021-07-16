@@ -49,9 +49,23 @@ export default function SignUp() {
     const authContext = useContext(AuthContext);
     const { registerUser, alerts, removeAlert, addUIAlert } = authContext;
 
+    const userList = [
+        {
+            label: 'Sykotiix',
+            username: 'sykotiix',
+            password: '123456',
+            passwordConfirm: '123456'
+        },
+        {
+            label: 'Abellar',
+            username: 'abellar',
+            password: '123456',
+            passwordConfirm: '123456'
+        }
+    ]
+    const [selectedUser, setSelectedUser] = useState({})
 
-
-    const [newUser, setNewUser] = useState({})
+    const [newUser, setNewUser] = useState(selectedUser)
     const { username, password, passwordConfirm } = newUser;
 
 
@@ -81,6 +95,8 @@ export default function SignUp() {
         await registerUser(newUser)
     }
 
+    
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -103,6 +119,20 @@ export default function SignUp() {
                     </Grid>
                 }
                 <form className={classes.form} noValidate>
+                    
+                    <TextField
+                        onChange={e => {
+                            setSelectedUser(e.target.value)
+                            setNewUser(e.target.value)}
+                        }
+                        value={selectedUser}
+                        label="Select User"
+                        name="username"
+                        select>
+                            {userList.map((user, i) => (
+                                <MenuItem key={i} value={user}>{user.label}</MenuItem>
+                            ))}
+                    </TextField>
 
                     <TextField
                         variant="outlined"
