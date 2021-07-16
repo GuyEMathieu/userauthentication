@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import { EmployeeContext } from '../context/employeeContext/EmployeeState'
+
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 function Copyright() {
@@ -48,26 +50,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+export default function NewEmployee() {
     const classes = useStyles();
 
-    const [user, setUser] = useState({})
-    const { username, password, confirmPassword } = user
+    const [employee, setEmployee] = useState({})
+    const { firstName, lastName, dateOfBirth } = employee
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setUser(prev => {
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
-    }
+    const handleChange = e => setEmployee({ ...employee, [e.target.name]: e.target.value })
 
 
     const handleSave = e => {
         e.preventDefault()
-        console.info(user)
+        console.info(employee)
     }
     return (
         <Container component="main" maxWidth="xs">
@@ -81,30 +75,35 @@ export default function SignUp() {
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} >
+                        <Grid item xs={12} md={6}>
                             <TextField
-                                value={username}
+                                value={firstName}
                                 onChange={handleChange}
-                                name="username"
-                                required label="Username"
+                                name="firstName"
+                                required label="First Name"
                                 autoFocus
                             />
                         </Grid>
-                        <Grid item xs={12} >
+                        <Grid item xs={12} md={6}>
                             <TextField
-                                value={password}
+                                value={lastName}
                                 onChange={handleChange}
-                                name="password"
-                                required label="Password"
-                                autoFocus
+                                name="lastName"
+                                required label="Last Name"
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                value={confirmPassword}
-                                onChange={handleChange}
-                                name="confirmPassword"
-                                required label="Confirm Password"
+                            <KeyboardDatePicker
+                                variant="inline" autoOk
+                                format="MM/dd/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label="Date of Birth"
+                                value={dateOfBirth}
+                                onChange={date => setEmployee({ ...employee, dateOfBirth: date })}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
                             />
                         </Grid>
 

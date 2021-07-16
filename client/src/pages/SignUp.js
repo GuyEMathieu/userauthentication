@@ -44,33 +44,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn() {
+export default function SignUp() {
     const classes = useStyles();
     const authContext = useContext(AuthContext);
-    const { loginUser, alerts, removeAlert } = authContext;
+    const { registerUser, alerts, removeAlert, addUIAlert } = authContext;
 
-    const [selectedUser, setSelectedUser] = useState({})
-    const { username, password } = selectedUser;
 
-    const users = [
-        { label: 'Peter Schroeder', username: 'Peter2776', password: 'Peter.Shcroeder' },
-        { label: 'Jessica Boulos', username: 'Jessica2480', password: 'Jessica.Boulos' }
-    ]
 
-    const handleChange = e => setSelectedUser({
-        ...selectedUser,
+    const [newUser, setNewUser] = useState({})
+    const { username, password, passwordConfirm } = newUser;
+
+
+    const handleChange = e => setNewUser({
+        ...newUser,
         [e.target.name]: e.target.value
     })
 
-
-    const handleLogin = async e => {
+    const handleRegisterUser = async e => {
         e.preventDefault();
-        await loginUser(selectedUser)
+
+        if(!username){
+            addUIAlert([{severity: 'error', msg: 'A valid username is required'}])
+            return
+        }
+
+        if(!password || password.length < 6){
+            addUIAlert([{severity: 'error', msg: 'A valid password  of 6 or more characteris required'}])
+            return
+        }
+
+        if(passwordConfirm !== password){
+            addUIAlert([{severity: 'error', msg: 'Your password and confirm password do not match'}])
+            return
+        }
+
+        await registerUser(newUser)
     }
 
-    const handleUserChange = e => {
-        setSelectedUser(e.target.value)
-    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -79,7 +90,7 @@ export default function SignIn() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    Sign Up
                 </Typography>
 
                 {alerts &&
@@ -93,16 +104,6 @@ export default function SignIn() {
                 }
                 <form className={classes.form} noValidate>
 
-                    <TextField
-                        onChange={handleUserChange}
-                        value={selectedUser}
-                        label="Select User" select
-                        name="selectedUser" >
-                        <MenuItem key='-1'>--None--</MenuItem>
-                        {users.map((user, i) => (
-                            <MenuItem key={i} value={user}>{user.label}</MenuItem>
-                        ))}
-                    </TextField>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -123,20 +124,30 @@ export default function SignIn() {
                         id="password"
                         autoComplete="current-password"
                     />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth onChange={handleChange}
+                        name="passwordConfirm" value={passwordConfirm}
+                        label="Confirm Password"
+                        type="password"
+                        autoComplete="current-password"
+                    />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button
                         type="submit"
-                        fullWidth onClick={handleLogin}
+                        fullWidth onClick={handleRegisterUser}
                         variant="contained"
                         color="primary"
                         className={classes.submit}
                     >
-                        Sign In
+                        Register
                     </Button>
-                    <Grid container>
+                    {/* <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">
                                 Forgot password?
@@ -147,7 +158,7 @@ export default function SignIn() {
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </form>
             </div>
             <Box mt={8}>

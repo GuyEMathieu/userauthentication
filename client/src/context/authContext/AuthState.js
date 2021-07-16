@@ -1,14 +1,18 @@
 import React, {createContext, useReducer} from 'react'
 import authReducer from './authReducer'
 import axios from 'axios'
+import { v4 as uid } from 'uuid';
 
 import {
     AUTH_ERROR,
     LOGIN_FAIL, 
     LOGIN_SUCCESS,
+    REGISTER_FAIL, 
+    REGISTER_SUCCESS,
     USER_LOADED,
     LOGOUT,
-    REMOVE_ALERT
+    REMOVE_ALERT,
+    SET_ALERT
 } from '../ContextTypes'
 
 export const AuthContext = createContext()
@@ -30,6 +34,26 @@ const AuthState = props => {
 
     }
 
+    const registerUser = async user => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try{
+            const res = await axios.post('/api/users', user, config)
+            console.info('Data', res.data)
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            })
+        }catch(err){
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.response.data.alerts
+            })
+        }
+    }
 
     // Login User
     const loginUser = async user => {
@@ -42,7 +66,10 @@ const AuthState = props => {
         try{
             const res = await axios.post('/api/auth', user, config)
 
-            console.info(res)
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            })
         }catch(err){
             dispatch({
                 type: LOGIN_FAIL,
@@ -50,7 +77,6 @@ const AuthState = props => {
             })
 
         }
-
     }
     // Logout
     const logoutUser = async () => {
@@ -62,6 +88,22 @@ const AuthState = props => {
         dispatch({
             type: REMOVE_ALERT,
             payload: id
+        })
+    }
+
+    const addUIAlert = async uiAlerts => {
+        console.info('Hey')
+        console.info(uiAlerts)
+
+        let alerts = []
+
+        for(let i = 0; i < uiAlerts.length; i++){
+            alerts.push({severity: uiAlerts[i].severity, msg: uiAlerts[i].msg, _id: uid()})
+        }
+
+        dispatch({
+            type: SET_ALERT,
+            payload: alerts
         })
     }
 
@@ -77,7 +119,9 @@ const AuthState = props => {
 
                 loadUser,
                 loginUser,
+                registerUser,
                 logoutUser,
+                addUIAlert,
                 removeAlert
             }}
         >
